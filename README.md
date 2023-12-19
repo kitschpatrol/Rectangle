@@ -14,9 +14,9 @@ Released here only for interop with my Homebrw tap.
 
 ## Setup
 
-`sh
-cp ./Sample Preferences/com.ericmika.Rectangle.plist ~/Library/Preferences/com.ericmika.Rectangle.plist
-`
+```sh
+cp "./Sample Preferences/com.ericmika.Rectangle.plist" ~/Library/Preferences/com.ericmika.Rectangle.plist
+```
 
 Sometimes these need to be reapplied after first launch:
 
