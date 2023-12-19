@@ -1,3 +1,27 @@
+# About This Fork
+
+This is a legacy build of [Rectangle](https://rectangleapp.com) version 0.43 circa Spring 2021 to get the specific "cycle displays" behavior I want.
+
+Released here only for interop with my Homebrw tap.
+
+Changes:
+
+- Prevent windows from jumping from display to display unpredictably by storing and comparing a history of their exact last position. See conversation in [Issue #374](https://github.com/rxhanson/Rectangle/discussions/374) and [PR #394](https://github.com/rxhanson/Rectangle/pull/394).
+- Bumped minimum macOS version to 10.13. Tested on macOS 14.2.
+- Changed application identifier to allow multiple versions on the same machine.
+- Added my preferences plist is in `./Sample Preferences`.
+
+Important settings:
+
+```sh
+defaults write com.ericmika.Rectangle subsequentExecutionMode -int 4
+defaults write com.ericmika.Rectangle resizeOnDirectionalMove -bool true
+```
+
+The original readme is below.
+
+---
+
 # Rectangle
 
 ![](https://github.com/rxhanson/Rectangle/workflows/Build/badge.svg)
@@ -7,9 +31,11 @@ Rectangle is a window management app based on Spectacle, written in Swift.
 ![image](https://user-images.githubusercontent.com/13651296/101402672-57ab5300-38d4-11eb-9e8c-6a3147d26711.png)
 
 ## System Requirements
+
 Rectangle supports macOS v10.11+. If you're willing to test on earlier versions of macOS, this can be updated.
 
 ## Installation
+
 You can download the latest dmg from https://rectangleapp.com or the [Releases page](https://github.com/rxhanson/Rectangle/releases).
 
 Or install with brew cask:
@@ -17,13 +43,15 @@ Or install with brew cask:
 ```bash
 brew install --cask rectangle
 ```
+
 ## How to use it
+
 The keyboard shortcuts are self explanatory, but the snap areas can use some explanation if you've never used them on Windows or other window management apps.
 
 Drag a window to the edge of the screen. When the mouse cursor reaches the edge of the screen, you'll see a footprint that Rectangle will attempt to resize and move the window to when the click is released.
 
 | Snap Area                                              | Resulting Action                       |
-|--------------------------------------------------------|----------------------------------------|
+| ------------------------------------------------------ | -------------------------------------- |
 | Left or right edge                                     | Left or right half                     |
 | Top                                                    | Maximize                               |
 | Corners                                                | Quarter in respective corner           |
@@ -33,25 +61,28 @@ Drag a window to the edge of the screen. When the mouse cursor reaches the edge 
 
 ### Ignore an app
 
-   1. Focus the app that you want to ignore (make a window from that app frontmost).
-   2. Open the Rectangle menu and select "Ignore app"
+1.  Focus the app that you want to ignore (make a window from that app frontmost).
+2.  Open the Rectangle menu and select "Ignore app"
 
 ## Differences with Spectacle
-* Rectangle uses [MASShortcut](https://github.com/shpakovski/MASShortcut) for keyboard shortcut recording. Spectacle used it's own shortcut recorder.
-* Rectangle has additional window actions: move windows to each edge without resizing, maximize only the height of a window, almost maximizing a window. 
-* Next/prev screen thirds is replaced with explicitly first third, first two thirds, center third, last two thirds, and last third. Screen orientation is taken into account, as in first third will be left third on landscape and top third on portrait.
-  * You can however emulate Spectacle's third cycling using first and last third actions. So, if you repeatedly execute first third, it will cycle through thirds (first, center, last) and vice-versa with the last third.
-* There's an option to have windows traverse across displays on subsequent left or right executions.
-* Windows will snap when dragged to edges/corners of the screen. This can be disabled.
+
+- Rectangle uses [MASShortcut](https://github.com/shpakovski/MASShortcut) for keyboard shortcut recording. Spectacle used it's own shortcut recorder.
+- Rectangle has additional window actions: move windows to each edge without resizing, maximize only the height of a window, almost maximizing a window.
+- Next/prev screen thirds is replaced with explicitly first third, first two thirds, center third, last two thirds, and last third. Screen orientation is taken into account, as in first third will be left third on landscape and top third on portrait.
+  - You can however emulate Spectacle's third cycling using first and last third actions. So, if you repeatedly execute first third, it will cycle through thirds (first, center, last) and vice-versa with the last third.
+- There's an option to have windows traverse across displays on subsequent left or right executions.
+- Windows will snap when dragged to edges/corners of the screen. This can be disabled.
 
 ## Terminal commands
+
 The preferences window is purposefully slim, but there's a lot that can be modified via Terminal. After executing a terminal command, restart the app as these values are loaded on application startup.
 
 ### Keyboard Shortcuts
+
 If you wish to change the default shortcuts after first launch, use the following command. True is for the recommended shortcuts, false is for Spectacle's.
 
 ```bash
-defaults write com.knollsoft.Rectangle alternateDefaultShortcuts -bool true
+defaults write com.ericmika.Rectangle alternateDefaultShortcuts -bool true
 ```
 
 ### Repeated Command Behavior
@@ -61,7 +92,7 @@ Rectangle implements a number of behaviors for handling repeated commands, only 
 The cycling behavior can be set with
 
 ```bash
-defaults write com.knollsoft.Rectangle subsequentExecutionMode -int <VALUE>
+defaults write com.ericmika.Rectangle subsequentExecutionMode -int <VALUE>
 ```
 
 Where `<VALUE>` is one of the following:
@@ -82,7 +113,7 @@ Disables cycling behavior entirely.
 Accessible only through the following terminal command:
 
 ```bash
-defaults write com.knollsoft.Rectangle subsequentExecutionMode -int 2
+defaults write com.ericmika.Rectangle subsequentExecutionMode -int 2
 ```
 
 #### `3`: Cycle displays for left / right actions, and halves to thirds for the rest
@@ -92,7 +123,7 @@ Combines the behaviors of settings `0` and `1`, but moves across windows instead
 Accessible only through the following terminal command:
 
 ```bash
-defaults write com.knollsoft.Rectangle subsequentExecutionMode -int 3
+defaults write com.ericmika.Rectangle subsequentExecutionMode -int 3
 ```
 
 #### `4`: Cycle displays (repeated execution of normally idempotent actions)
@@ -104,10 +135,11 @@ For example, setting a window to "right half" will execute that action first on 
 Accessible only through the following terminal command:
 
 ```bash
-defaults write com.knollsoft.Rectangle subsequentExecutionMode -int 4
+defaults write com.ericmika.Rectangle subsequentExecutionMode -int 4
 ```
 
 ### Resize on Directional Move
+
 By default, the commands to move to certain edges will not resize the window.
 If `resizeOnDirectionalMove` is enabled, the _halves to thirds_ mode is instead used.
 This means that when moving to the left/right, the width will be changed, and when moving to the top/bottom, the height will be changed.
@@ -116,23 +148,23 @@ This size will cycle between 1/2 → 2/3 → 1/3 of the screen’s width/height.
 Note that if subsequent execution mode is set to cycle displays when this is enabled, Move Left and Move Right will always resize to 1/2, and pressing it again will move to the next display.
 
 ```bash
-defaults write com.knollsoft.Rectangle resizeOnDirectionalMove -bool true
+defaults write com.ericmika.Rectangle resizeOnDirectionalMove -bool true
 ```
 
 ### Enable Todo Mode
+
 See the [wiki](https://github.com/rxhanson/Rectangle/wiki/Todo-Mode) for more info.
 
 ```bash
-defaults write com.knollsoft.Rectangle todo -int 1
+defaults write com.ericmika.Rectangle todo -int 1
 ```
-
 
 ### Only allow drag-to-snap when modifier keys are pressed
 
 Modifier key values can be ORed together.
 
 | Modifier Key | Integer Value |
-|--------------|---------------|
+| ------------ | ------------- |
 | cmd          | 1048576       |
 | option       | 524288        |
 | ctrl         | 262144        |
@@ -140,64 +172,67 @@ Modifier key values can be ORed together.
 | fn           | 8388608       |
 
 This command would be for restricting snap to the cmd key:
+
 ```bash
-defaults write com.knollsoft.Rectangle snapModifiers -int 1048576
+defaults write com.ericmika.Rectangle snapModifiers -int 1048576
 ```
 
-
 ### Almost Maximize
+
 By default, "Almost Maximize" will resize the window to 90% of the screen (width & height).
 
 ```bash
-defaults write com.knollsoft.Rectangle almostMaximizeHeight -float <VALUE_BETWEEN_0_&_1>
+defaults write com.ericmika.Rectangle almostMaximizeHeight -float <VALUE_BETWEEN_0_&_1>
 ```
 
 ```bash
-defaults write com.knollsoft.Rectangle almostMaximizeWidth -float <VALUE_BETWEEN_0_&_1>
+defaults write com.ericmika.Rectangle almostMaximizeWidth -float <VALUE_BETWEEN_0_&_1>
 ```
+
 ### Modify the "footprint" displayed for drag to snap area
 
 Adjust the alpha (transparency). Default is 0.3.
 
 ```bash
-defaults write com.knollsoft.Rectangle footprintAlpha -float <VALUE_BETWEEN_0_&_1>
+defaults write com.ericmika.Rectangle footprintAlpha -float <VALUE_BETWEEN_0_&_1>
 ```
 
 Change the border width. Default is 2 (used to be 1).
 
 ```bash
-defaults write com.knollsoft.Rectangle footprintBorderWidth -float <NUM_PIXELS>
+defaults write com.ericmika.Rectangle footprintBorderWidth -float <NUM_PIXELS>
 ```
 
 Disable the fade.
 
 ```bash
-defaults write com.knollsoft.Rectangle footprintFade -int 2
+defaults write com.ericmika.Rectangle footprintFade -int 2
 ```
 
 Change the color.
 
 ```bash
-defaults write com.knollsoft.Rectangle footprintColor -string "{\"red\":0,\"blue\":0.5,\"green\":0.5}"
+defaults write com.ericmika.Rectangle footprintColor -string "{\"red\":0,\"blue\":0.5,\"green\":0.5}"
 ```
 
 ### Move Up/Down/Left/Right: Don't center on edge
 
-By default, the directional move will center the window along the edge that the window is being moved to. 
+By default, the directional move will center the window along the edge that the window is being moved to.
 
 ```bash
-defaults write com.knollsoft.Rectangle centeredDirectionalMove -int 2
+defaults write com.ericmika.Rectangle centeredDirectionalMove -int 2
 ```
+
 ### Make Smaller limits
 
 By default, "Make Smaller" will decrease the window until it reaches 25% of the screen (width & height).
 
 ```bash
-defaults write com.knollsoft.Rectangle minimumWindowWidth -float <VALUE_BETWEEN_0_&_1>
+defaults write com.ericmika.Rectangle minimumWindowWidth -float <VALUE_BETWEEN_0_&_1>
 ```
 
 ```bash
-defaults write com.knollsoft.Rectangle minimumWindowHeight -float <VALUE_BETWEEN_0_&_1>
+defaults write com.ericmika.Rectangle minimumWindowHeight -float <VALUE_BETWEEN_0_&_1>
 ```
 
 ### Make Smaller/Make Larger size increments
@@ -205,7 +240,7 @@ defaults write com.knollsoft.Rectangle minimumWindowHeight -float <VALUE_BETWEEN
 By default, "Make Smaller" and "Make Larger" change the window height/width by 30 pixels.
 
 ```bash
-defaults write com.knollsoft.Rectangle sizeOffset -float <NUM_PIXELS>
+defaults write com.ericmika.Rectangle sizeOffset -float <NUM_PIXELS>
 ```
 
 ### Make Smaller/Make Larger "curtain resize" with gaps
@@ -213,13 +248,13 @@ defaults write com.knollsoft.Rectangle sizeOffset -float <NUM_PIXELS>
 By default, windows touching the edge of the screen will keep those shared edges the same while only resizing the non-shared edge. With window gaps, this is a little ambiguous since the edges don't actually touch the screen, so you can disable it for traditional, floating resizing:
 
 ```bash
-defaults write com.knollsoft.Rectangle curtainChangeSize -int 2
+defaults write com.ericmika.Rectangle curtainChangeSize -int 2
 ```
 
 ### Disabling window restore when moving windows
 
 ```bash
-defaults write com.knollsoft.Rectangle unsnapRestore -int 2
+defaults write com.ericmika.Rectangle unsnapRestore -int 2
 ```
 
 ### Changing the margin for the snap areas
@@ -227,10 +262,10 @@ defaults write com.knollsoft.Rectangle unsnapRestore -int 2
 Each margin is configured separately, and has a default value of 5
 
 ```bash
-defaults write com.knollsoft.Rectangle snapEdgeMarginTop -int 10
-defaults write com.knollsoft.Rectangle snapEdgeMarginBottom -int 10
-defaults write com.knollsoft.Rectangle snapEdgeMarginLeft -int 10
-defaults write com.knollsoft.Rectangle snapEdgeMarginRight -int 10
+defaults write com.ericmika.Rectangle snapEdgeMarginTop -int 10
+defaults write com.ericmika.Rectangle snapEdgeMarginBottom -int 10
+defaults write com.ericmika.Rectangle snapEdgeMarginLeft -int 10
+defaults write com.ericmika.Rectangle snapEdgeMarginRight -int 10
 ```
 
 ### Setting gaps at the screen edges
@@ -238,19 +273,18 @@ defaults write com.knollsoft.Rectangle snapEdgeMarginRight -int 10
 You can specify gaps at the edges of your screen that will be left uncovered by window resizing operations. This is useful if, for example, you use a dock replacement that should not have windows overlapping it.
 
 ```bash
-defaults write com.knollsoft.Rectangle screenEdgeGapTop -int 10
-defaults write com.knollsoft.Rectangle screenEdgeGapBottom -int 10
-defaults write com.knollsoft.Rectangle screenEdgeGapLeft -int 10
-defaults write com.knollsoft.Rectangle screenEdgeGapRight -int 10
+defaults write com.ericmika.Rectangle screenEdgeGapTop -int 10
+defaults write com.ericmika.Rectangle screenEdgeGapBottom -int 10
+defaults write com.ericmika.Rectangle screenEdgeGapLeft -int 10
+defaults write com.ericmika.Rectangle screenEdgeGapRight -int 10
 ```
 
 ### Ignore specific drag to snap areas
 
 Each drag to snap area on the edge of a screen can be ignored with a single Terminal command, but it's a bit field setting so you'll have to determine the bit field for which ones you want to disable.
 
-
 | Bit | Snap Area                 | Window Action       |
-|-----|---------------------------|---------------------|
+| --- | ------------------------- | ------------------- |
 | 1   | Top                       | Maximize            |
 | 2   | Bottom                    | Thirds              |
 | 3   | Left                      | Left Half           |
@@ -265,13 +299,15 @@ Each drag to snap area on the edge of a screen can be ignored with a single Term
 | 12  | Bottom Right Above Corner | Bottom Half         |
 
 To disable the top (maximize) snap area, execute:
+
 ```bash
-defaults write com.knollsoft.Rectangle ignoredSnapAreas -int 1
+defaults write com.ericmika.Rectangle ignoredSnapAreas -int 1
 ```
 
 To disable the Top Half and Bottom Half snap areas, the bit field would be 1111 0000 0000, or 3840
+
 ```bash
-defaults write com.knollsoft.Rectangle ignoredSnapAreas -int 3840
+defaults write com.ericmika.Rectangle ignoredSnapAreas -int 3840
 ```
 
 ## Common Known Issues
@@ -289,7 +325,9 @@ defaults write com.googlecode.iterm2 DisableWindowSizeSnap -integer 1
 ```
 
 ### Troubleshooting
+
 If windows aren't resizing or moving as you expect, here's some initial steps to get to the bottom of it. Most issues of this type have been caused by other apps.
+
 1. Make sure macOS is up to date, if possible.
 1. Restart your machine.
 1. Make sure there are no other window manager applications running.
@@ -300,13 +338,15 @@ If windows aren't resizing or moving as you expect, here's some initial steps to
 1. If you suspect there may be another application causing issues, try creating and logging in as a new macOS user.
 
 ## View Debug Logging
-1. Hold down the alt (option) key with the Rectangle menu open. 
+
+1. Hold down the alt (option) key with the Rectangle menu open.
 1. Select the "View Logging..." menu item, which is in place of the "About" menu item.
 1. Logging will appear in the window as you perform Rectangle commands.
 
 ## Preferences Storage
+
 The configuration for Rectangle is stored using NSUserDefaults, meaning it is stored in the following location:
-`~/Library/Preferences/com.knollsoft.Rectangle.plist`
+`~/Library/Preferences/com.ericmika.Rectangle.plist`
 Note that shortcuts in v0.41+ are stored in a different format and will not load in prior versions.
 
 That file can be backed up or transferred to other machines.
@@ -314,16 +354,19 @@ That file can be backed up or transferred to other machines.
 ---
 
 ## Contributing
-Logic from Rectangle is used in the [Multitouch](https://multitouch.app) app. The [Hookshot](https://hookshot.app) app is entirely built on top of Rectangle. If you contribute significant code or localizations that get merged into Rectangle, you get a free license of Multitouch or Hookshot. Contributors to Sparkle, MASShortcut, or Spectacle can also receive free Multitouch or Hookshot licenses (just send me a direct message on [Gitter](https://gitter.im)). 
+
+Logic from Rectangle is used in the [Multitouch](https://multitouch.app) app. The [Hookshot](https://hookshot.app) app is entirely built on top of Rectangle. If you contribute significant code or localizations that get merged into Rectangle, you get a free license of Multitouch or Hookshot. Contributors to Sparkle, MASShortcut, or Spectacle can also receive free Multitouch or Hookshot licenses (just send me a direct message on [Gitter](https://gitter.im)).
 
 ### Localization
+
 Initial localizations were done using [DeepL](https://www.deepl.com/translator) and Google Translate, but many of them have been updated by contributors. Translations that weren't done by humans can definitely be improved. If you would like to contribute to localization, all of the translations are held in the Main.strings per language. If you would like to add a localization but one doesn't currently exist and you don't know how to create one, create an issue and a translation file can be initialized.
 
 Pull requests for new localizations or improvements on existing localizations are welcome.
 
 ### Running the app in Xcode (for developers)
-Rectangle uses [CocoaPods](https://cocoapods.org/) to install Sparkle and MASShortcut. 
+
+Rectangle uses [CocoaPods](https://cocoapods.org/) to install Sparkle and MASShortcut.
 
 1. Make sure CocoaPods is installed and up to date on your machine (`sudo gem install cocoapods`).
-1. Execute `pod install` the root directory of the project. 
+1. Execute `pod install` the root directory of the project.
 1. Open the generated xcworkspace file (`open Rectangle.xcworkspace`).

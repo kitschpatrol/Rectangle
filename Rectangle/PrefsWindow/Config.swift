@@ -25,7 +25,7 @@ extension Defaults {
             codableDefaults[exportableDefault.key] = exportableDefault.toCodable()
         }
                 
-        let config = Config(bundleId: "com.knollsoft.Rectangle",
+        let config = Config(bundleId: "com.ericmika.Rectangle",
                             version: version,
                             shortcuts: shortcuts,
                             defaults: codableDefaults)
