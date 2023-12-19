@@ -38,7 +38,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if let lastVersion = Defaults.lastVersion.value,
            let intLastVersion = Int(lastVersion) {
             if intLastVersion < 46 {
-                MASShortcutMigration.migrate()
+                // MASShortcutMigration.migrate()
             }
         }
         
@@ -49,9 +49,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         checkLaunchOnLogin()
         
         let alreadyTrusted = accessibilityAuthorization.checkAccessibility {
-            self.showWelcomeWindow()
+            // self.showWelcomeWindow()
             self.checkForConflictingApps()
-            self.openPreferences(self)
+            // self.openPreferences(self)
             self.statusItem.statusMenu = self.mainStatusMenu
             self.accessibilityTrusted()
         }

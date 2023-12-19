@@ -4,14 +4,21 @@ This is a legacy build of [Rectangle](https://rectangleapp.com) version 0.43 cir
 
 Released here only for interop with my Homebrw tap.
 
-Changes:
+## Changes
 
+- Disable some first-launch prompts.
 - Prevent windows from jumping from display to display unpredictably by storing and comparing a history of their exact last position. See conversation in [Issue #374](https://github.com/rxhanson/Rectangle/discussions/374) and [PR #394](https://github.com/rxhanson/Rectangle/pull/394).
 - Bumped minimum macOS version to 10.13. Tested on macOS 14.2.
 - Changed application identifier to allow multiple versions on the same machine.
 - Added my preferences plist is in `./Sample Preferences`.
 
-Important settings:
+## Setup
+
+`sh
+cp ./Sample Preferences/com.ericmika.Rectangle.plist ~/Library/Preferences/com.ericmika.Rectangle.plist
+`
+
+Sometimes these need to be reapplied after first launch:
 
 ```sh
 defaults write com.ericmika.Rectangle subsequentExecutionMode -int 4
