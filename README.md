@@ -2,7 +2,7 @@
 
 This is a legacy build of [Rectangle](https://rectangleapp.com) version 0.43 circa Spring 2021 to get the specific "cycle displays" behavior I want.
 
-Released here only for interop with my Homebrw tap.
+Released here only for interop with my Homebrew tap.
 
 ## Changes
 
